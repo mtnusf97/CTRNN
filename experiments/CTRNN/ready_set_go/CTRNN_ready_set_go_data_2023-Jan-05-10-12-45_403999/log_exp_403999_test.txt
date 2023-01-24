@@ -1,0 +1,5 @@
+INFO  | 01/05/2023 12:59:52 PM | File run_exp.py           | Line 28    | Writing log file to experiments/CTRNN/ready_set_go/CTRNN_ready_set_go_data_2023-Jan-05-10-12-45_403999/log_exp_403999_test.txt
+INFO  | 01/05/2023 12:59:52 PM | File run_exp.py           | Line 29    | Exp instance id = 403999
+INFO  | 01/05/2023 12:59:52 PM | File run_exp.py           | Line 30    | Exp comment = None
+INFO  | 01/05/2023 12:59:52 PM | File run_exp.py           | Line 31    | Config =
+INFO  | 01/05/2023 01:00:08 PM | File ready_set_go_ctrnn_runner.py | Line 199   | test Loss = 0.06252769343554973
