@@ -1,0 +1,130 @@
+from __future__ import print_function, division
+import numpy as np
+import torch
+
+
+def sin_generator(num_of_points, data_points_interval):
+    data_x = np.arange(num_of_points) * data_points_interval
+    data_x = data_x.reshape(1, -1).reshape(-1, 1)
+    data_y = np.sin(data_x)
+    return data_x, data_y
+
+
+def simple_steady_beat_generator(input_duration, output_duration, data_points_interval, beats_interval):
+    """Generate simple steady beats
+
+    Arguments:
+      input_duration: duration of the networks input (seconds)
+      output_duration: duration of the networks output (seconds)
+      data_points_interval: time difference between every two consecutive data points ==> dt (seconds)
+      beats_interval: time difference between every two consecutive beats (seconds)
+
+    Returns:
+      data_x: input to the network
+      data_y: output to the network
+
+    """
+
+    output_size = int(output_duration / data_points_interval)
+    input_size = int(input_duration / data_points_interval)
+    beats_interval_size = int(beats_interval / data_points_interval)
+    data_x = np.zeros(output_size)
+    data_x[input_size:output_size] = -1
+    idx = 0
+    while idx <= input_size:
+        data_x[idx] = 1
+        idx += beats_interval_size
+
+    data_y = np.zeros(output_size)
+    idx = 0
+    while idx < output_size:
+        data_y[idx] = 1
+        idx += beats_interval_size
+
+    data_x = data_x.reshape(1, -1).reshape(-1, 1)
+    data_y = data_y.reshape(1, -1).reshape(-1, 1)
+    return data_x, data_y
+
+
+def cue_signal_generator(data_duration,
+                         cue_first_time,
+                         cue_last_time,
+                         sine_length,
+                         sine_amplitude,
+                         dt):
+    assert cue_last_time + sine_length <= data_duration
+    data_size = int(data_duration / dt)
+
+    # create data_x
+    data_x = torch.zeros((1, data_size))
+    cue_time = np.random.uniform(low=cue_first_time, high=cue_last_time)
+    cue_idx = int(cue_time / dt)
+    data_x[0, cue_idx] = 1.0
+
+    # create data_y
+    data_y = torch.zeros((1, data_size))
+    sine_size = int(sine_length / dt)
+    sine_times = torch.arange(sine_size) * (2 * np.pi / sine_size)
+    sine_wave = torch.sin(sine_times) * sine_amplitude
+    data_y[0, cue_idx:cue_idx + sine_size] = sine_wave
+    sine_last_idx = cue_idx + sine_size
+
+    return data_x, data_y, cue_idx, sine_last_idx
+
+
+def ready_set_go_generator(data_duration,
+                           first_cue_first_time,
+                           first_cue_last_time,
+                           min_interval,
+                           max_interval,
+                           sine_amplitude,
+                           cue_amplitude,
+                           dt):
+    assert first_cue_last_time + 2 * max_interval <= data_duration
+    assert min_interval < max_interval
+
+    data_size = int(data_duration / dt)
+
+    # create data_x
+    data_x = torch.zeros((1, data_size))
+    first_cue_time = np.random.uniform(low=first_cue_first_time, high=first_cue_last_time)
+    interval_between_cues = np.random.uniform(low=min_interval, high=max_interval)
+    first_cue_idx = int(first_cue_time / dt)
+    second_cue_idx = int((first_cue_time + interval_between_cues)/dt)
+    data_x[0, first_cue_idx] = data_x[0, second_cue_idx] = cue_amplitude
+
+    # create data_y
+    data_y = torch.zeros((1, data_size))
+    sine_size = int(interval_between_cues / dt)
+    sine_times = torch.arange(sine_size) * (2 * np.pi / sine_size)
+    sine_wave = torch.sin(sine_times) * sine_amplitude
+    data_y[0, second_cue_idx:second_cue_idx + sine_size] = sine_wave
+    sine_last_idx = second_cue_idx + sine_size
+
+    return data_x, data_y, first_cue_idx, second_cue_idx, sine_last_idx
+
+
+def ready_set_go_forced_generator(data_duration,
+                                  first_cue_time,
+                                  second_cue_time,
+                                  sine_amplitude,
+                                  dt):
+    assert 2 * second_cue_time - first_cue_time < data_duration
+
+    data_size = int(data_duration / dt)
+
+    # create data_x
+    data_x = torch.zeros((1, data_size))
+    first_cue_idx = int(first_cue_time / dt)
+    second_cue_idx = int(second_cue_time /dt)
+    data_x[0, first_cue_idx] = data_x[0, second_cue_idx] = 1.0
+
+    # create data_y
+    data_y = torch.zeros((1, data_size))
+    sine_size = int((second_cue_time - first_cue_time) / dt)
+    sine_times = torch.arange(sine_size) * (2 * np.pi / sine_size)
+    sine_wave = torch.sin(sine_times) * sine_amplitude
+    data_y[0, second_cue_idx:second_cue_idx + sine_size] = sine_wave
+    sine_last_idx = second_cue_idx + sine_size
+
+    return data_x, data_y, first_cue_idx, second_cue_idx, sine_last_idx
