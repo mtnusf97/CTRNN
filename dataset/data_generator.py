@@ -90,7 +90,7 @@ def ready_set_go_generator(data_duration,
     first_cue_time = np.random.uniform(low=first_cue_first_time, high=first_cue_last_time)
     interval_between_cues = np.random.uniform(low=min_interval, high=max_interval)
     first_cue_idx = int(first_cue_time / dt)
-    second_cue_idx = int((first_cue_time + interval_between_cues)/dt)
+    second_cue_idx = int((first_cue_time + interval_between_cues) / dt)
     data_x[0, first_cue_idx] = data_x[0, second_cue_idx] = cue_amplitude
 
     # create data_y
@@ -116,7 +116,7 @@ def ready_set_go_forced_generator(data_duration,
     # create data_x
     data_x = torch.zeros((1, data_size))
     first_cue_idx = int(first_cue_time / dt)
-    second_cue_idx = int(second_cue_time /dt)
+    second_cue_idx = int(second_cue_time / dt)
     data_x[0, first_cue_idx] = data_x[0, second_cue_idx] = 1.0
 
     # create data_y
@@ -128,3 +128,46 @@ def ready_set_go_forced_generator(data_duration,
     sine_last_idx = second_cue_idx + sine_size
 
     return data_x, data_y, first_cue_idx, second_cue_idx, sine_last_idx
+
+
+def gaussian_derivative_shape(x, concavity_change_point, variance):
+    b = concavity_change_point
+    c = variance
+    return np.exp(-np.power(x - b, 2) / (2 * np.power(c, 2))) * -2 * (x - b) / (2 * np.power(c, 2))
+
+
+def scaled_gaussian_derivative_shape(x, concavity_change_point, variance, scale):
+    b = concavity_change_point
+    c = variance
+    return (scale / (2 * gaussian_derivative_shape(b - c, b, c))) * gaussian_derivative_shape(x, b, c) + 0.5
+
+
+def gaussian_derivative_loss_data(data_duration,
+                                  first_cue_first_time,
+                                  first_cue_last_time,
+                                  min_interval,
+                                  max_interval,
+                                  cue_amplitude,
+                                  variance,
+                                  scale,
+                                  dt):
+    assert first_cue_last_time + 2 * max_interval <= data_duration
+    assert min_interval < max_interval
+
+    data_size = int(data_duration / dt)
+
+    # create data_x
+    data_x = torch.zeros((1, data_size))
+    first_cue_time = np.random.uniform(low=first_cue_first_time, high=first_cue_last_time)
+    interval_between_cues = np.random.uniform(low=min_interval, high=max_interval)
+    first_cue_idx = int(first_cue_time / dt)
+    second_cue_idx = int((first_cue_time + interval_between_cues) / dt)
+    data_x[0, first_cue_idx] = data_x[0, second_cue_idx] = cue_amplitude
+
+    # create data_y
+    concavity_change = first_cue_time + 2 * interval_between_cues
+    temp_x = torch.arange(data_size).reshape((1, data_size)) * dt
+    data_y = scaled_gaussian_derivative_shape(temp_x, concavity_change, variance, scale)
+
+    return data_x, data_y, first_cue_idx, second_cue_idx, concavity_change
+

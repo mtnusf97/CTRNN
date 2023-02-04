@@ -12,10 +12,10 @@ from torch.utils.data import SubsetRandomSampler
 import os
 
 logger = get_logger('exp_logger')
-__all__ = ['CueCTRNNRunner']
+__all__ = ['GaussianDerivativeLossCtrnnRunner']
 
 
-class CueCTRNNRunner(object):
+class GaussianDerivativeLossCtrnnRunner(object):
 
     def __init__(self, config):
         self.config = config
@@ -106,7 +106,7 @@ class CueCTRNNRunner(object):
             criterion = eval(self.train_conf.criterion)
 
             # Training
-            for iteration, (data, target, cue_idx, sine_last_idx) in enumerate(train_loader):
+            for iteration, (data, target, first_cue_idx, second_cue_idx, concavity_change) in enumerate(train_loader):
                 total_iteration += 1
                 optimizer.zero_grad()
                 activations, hidden_states, outputs = model.init_activations_outputs(batch_size=self.train_conf.
@@ -115,7 +115,7 @@ class CueCTRNNRunner(object):
                                                             activations.to(self.device),
                                                             hidden_states.to(self.device),
                                                             outputs)
-                loss = criterion(outputs, target.to(self.device), cue_idx, sine_last_idx, self.config)
+                loss = criterion(outputs, target.to(self.device))
                 loss.backward()
                 optimizer.step()
                 train_loss += loss.item() * len(data)
@@ -129,14 +129,14 @@ class CueCTRNNRunner(object):
             is_training = model.training
             val_loss = 0
             model.eval()
-            for data, target, cue_idx, sine_last_idx in val_loader:
+            for data, target, first_cue_idx, second_cue_idx, concavity_change in val_loader:
                 activations, hidden_states, outputs = model.init_activations_outputs(batch_size=self.train_conf.
                                                                                      batch_size)
                 outputs, activations, hidden_states = model(data.to(self.device),
                                                             activations.to(self.device),
                                                             hidden_states.to(self.device),
                                                             outputs)
-                loss = criterion(outputs, target.to(self.device), cue_idx, sine_last_idx, self.config)
+                loss = criterion(outputs, target.to(self.device))
                 val_loss += loss.item() * data.size()[0]
             val_loss /= len(val_index)
             logger.info(
@@ -186,14 +186,14 @@ class CueCTRNNRunner(object):
         criterion = eval(self.train_conf.criterion)
         total_test_loss = 0.0
         model.eval()
-        for data, target, cue_idx, sine_last_idx in test_loader:
+        for data, target, first_cue_idx, second_cue_idx, concavity_change in test_loader:
             activations, hidden_states, outputs = model.init_activations_outputs(batch_size=self.train_conf.
                                                                                  batch_size)
             outputs, activations, hidden_states = model(data.to(self.device),
                                                         activations.to(self.device),
                                                         hidden_states.to(self.device),
                                                         outputs)
-            loss = criterion(outputs, target.to(self.device), cue_idx, sine_last_idx, self.config)
+            loss = criterion(outputs, target.to(self.device))
             total_test_loss += loss.item() * data.size()[0]
         total_test_loss /= len(test_dataset)
         logger.info("test Loss = {}".format(total_test_loss))
