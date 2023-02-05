@@ -2,8 +2,8 @@ dataset:
   input_transform: false
   loader_name: GaussianDerivativeLossData
   name: gaussian_derivative_loss_data
-  path_to_test_data: /home/matin/McMaster/trimba/phd_codes/CTRNN/generated_datasets/gaussian_loss_shape_samples_1000_duration_40_dt01_cue_f10_l20_interval_2_8_sa1_cuea1_variance0.4_scale0.99.pkl
-  path_to_train_data: /home/matin/McMaster/trimba/phd_codes/CTRNN/generated_datasets/gaussian_loss_shape_samples_5000_duration_40_dt01_cue_f10_l20_interval_2_8_sa1_cuea1_variance0.4_scale0.99.pkl
+  path_to_test_data: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/generated_datasets/gaussian_loss_shape_samples_1000_duration_40_dt01_cue_f10_l20_interval_2_8_sa1_cuea1_variance0.4_scale0.99.pkl
+  path_to_train_data: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/generated_datasets/gaussian_loss_shape_samples_5000_duration_40_dt01_cue_f10_l20_interval_2_8_sa1_cuea1_variance0.4_scale0.99.pkl
   target_transform: false
   train_ratio: 0.8
 device: cpu
@@ -46,6 +46,6 @@ train:
   resume_epoch: 100
   resume_model: model_snapshot_ready_set_go_data.pth
   snapshot_epoch: 1
-  train_use_gpu: false
+  train_use_gpu: true
   wd: 0
-use_gpu: false
+use_gpu: true
