@@ -7,7 +7,7 @@ path = 'filename.pickle'
 with open(path, 'wb') as handle:
     pickle.dump(a, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-with open('filename.pickle', 'rb') as handle:
+with open(path, 'rb') as handle:
     b = pickle.load(handle)
 
 print(a == b)
