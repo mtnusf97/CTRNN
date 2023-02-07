@@ -2,12 +2,12 @@ dataset:
   input_transform: false
   loader_name: ReadySetGoData
   name: ready_set_go_data
-  path_to_test_data: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/generated_datasets/ready_set_go_samples_1000_duration40_dt0.01_cue_f10l20_interval_2_8_targeta1_cuea1_targetshapetriangle.pkl
-  path_to_train_data: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/generated_datasets/ready_set_go_samples_5000_duration40_dt0.01_cue_f10l20_interval_2_8_targeta1_cuea1_targetshapetriangle.pkl
+  path_to_test_data: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/generated_datasets/ready_set_go_samples_1000_duration40_dt0.01_cue_f10l20_interval_2_8_targeta1_cuea1_targetshapedouble_sine.pkl
+  path_to_train_data: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/generated_datasets/ready_set_go_samples_5000_duration40_dt0.01_cue_f10l20_interval_2_8_targeta1_cuea1_targetshapedouble_sine.pkl
   target_transform: false
   train_ratio: 0.8
 device: cuda:0
-exp_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/CTRNN/ready_set_go
+exp_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/CTRNN/ready_set_go_dobule_sine
 exp_name: CTRNN_ready_set_go_data_2023-Jan-13-13-09-35_706238
 gpus:
 - 0
