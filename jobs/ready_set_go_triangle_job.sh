@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --time=05:00:00
+#SBATCH --time=10:00:00
 #SBATCH --account=def-cannoj9
 #SBATCH --gpus-per-node=a100:1
 #SBATCH --ntasks-per-gpu=1
