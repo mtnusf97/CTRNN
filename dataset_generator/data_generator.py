@@ -136,6 +136,8 @@ def ready_set_go_generator(target_shape,
         data_y = torch.zeros((1, data_size))
         rectangle_size = int(interval_between_cues / dt)
         data_y[0, second_cue_idx:second_cue_idx + rectangle_size] = target_amplitude
+    else:
+        raise Exception(f"target shape {target_shape} is not defined")
 
     last_idx = second_cue_idx + y_size
 
