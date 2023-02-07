@@ -1,6 +1,8 @@
 from __future__ import print_function, division
 import numpy as np
 import torch
+import scipy
+# from scipy import signal
 
 
 def sin_generator(num_of_points, data_points_interval):
@@ -72,14 +74,28 @@ def cue_signal_generator(data_duration,
     return data_x, data_y, cue_idx, sine_last_idx
 
 
-def ready_set_go_generator(data_duration,
+def ready_set_go_generator(target_shape,
+                           data_duration,
                            first_cue_first_time,
                            first_cue_last_time,
                            min_interval,
                            max_interval,
-                           sine_amplitude,
+                           target_amplitude,
                            cue_amplitude,
                            dt):
+    """
+    :param target_shape: str showing the shape of target, could be one of options: triangle, rectangle, semicircle
+    , half_sine, full_sine, double_sine, triple_sine
+    :param data_duration:
+    :param first_cue_first_time:
+    :param first_cue_last_time:
+    :param min_interval:
+    :param max_interval:
+    :param target_amplitude:
+    :param cue_amplitude:
+    :param dt:
+    :return:
+    """
     assert first_cue_last_time + 2 * max_interval <= data_duration
     assert min_interval < max_interval
 
@@ -95,13 +111,35 @@ def ready_set_go_generator(data_duration,
 
     # create data_y
     data_y = torch.zeros((1, data_size))
-    sine_size = int(interval_between_cues / dt)
-    sine_times = torch.arange(sine_size) * (2 * np.pi / sine_size)
-    sine_wave = torch.sin(sine_times) * sine_amplitude
-    data_y[0, second_cue_idx:second_cue_idx + sine_size] = sine_wave
-    sine_last_idx = second_cue_idx + sine_size
+    y_size = int(interval_between_cues / dt)
+    if target_shape == 'half_sine':
+        sine_times = torch.arange(y_size) * (np.pi / y_size)
+        sine_wave = torch.sin(sine_times) * target_amplitude
+        data_y[0, second_cue_idx:second_cue_idx + y_size] = sine_wave
+    elif target_shape == 'full_sine':
+        sine_times = torch.arange(y_size) * (2 * np.pi / y_size)
+        sine_wave = torch.sin(sine_times) * target_amplitude
+        data_y[0, second_cue_idx:second_cue_idx + y_size] = sine_wave
+    elif target_shape == 'double_sine':
+        sine_times = torch.arange(y_size) * (4 * np.pi / y_size)
+        sine_wave = torch.sin(sine_times) * target_amplitude
+        data_y[0, second_cue_idx:second_cue_idx + y_size] = sine_wave
+    elif target_shape == 'triple_sine':
+        sine_times = torch.arange(y_size) * (6 * np.pi / y_size)
+        sine_wave = torch.sin(sine_times) * target_amplitude
+        data_y[0, second_cue_idx:second_cue_idx + y_size] = sine_wave
+    elif target_shape == 'triangle':
+        triangle_times = torch.arange(y_size) * (2 * np.pi / y_size)
+        triangle_wave = 0.5 * (scipy.signal.sawtooth(triangle_times, 0.5) + 1) * target_amplitude
+        data_y[0, second_cue_idx:second_cue_idx + y_size] = torch.tensor(triangle_wave)
+    elif target_shape == 'rectangle':
+        data_y = torch.zeros((1, data_size))
+        rectangle_size = int(interval_between_cues / dt)
+        data_y[0, second_cue_idx:second_cue_idx + rectangle_size] = target_amplitude
 
-    return data_x, data_y, first_cue_idx, second_cue_idx, sine_last_idx
+    last_idx = second_cue_idx + y_size
+
+    return data_x, data_y, first_cue_idx, second_cue_idx, last_idx
 
 
 def ready_set_go_forced_generator(data_duration,
@@ -170,4 +208,3 @@ def gaussian_derivative_loss_data(data_duration,
     data_y = scaled_gaussian_derivative_shape(temp_x, concavity_change, variance, scale)
 
     return data_x, data_y, first_cue_idx, second_cue_idx, concavity_change
-
