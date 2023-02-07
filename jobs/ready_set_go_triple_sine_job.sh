@@ -8,6 +8,6 @@
 
 source ../.venv/bin/activate
 echo 'starting point'
-python3 /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/run_exp.py -c /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/config/ready_set_go_rectangle_triple_sine.yaml
+python3 /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/run_exp.py -c /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/config/ready_set_go_triple_sine.yaml
 echo 'Done'
 sleep 5
