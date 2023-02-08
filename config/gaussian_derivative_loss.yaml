@@ -34,7 +34,7 @@ train:
   criterion: gaussian_derivative_loss
   display_iter: 1
   is_resume: false
-  loss_includes: just_sine
+  loss_includes: just_target
   lr: 1.0e-05
   lr_decay: 0.1
   lr_decay_epoch:

@@ -23,14 +23,14 @@ def ready_set_go_mse_loss(model_outputs,
     if config.train.loss_includes == 'all':
         return criterion(model_outputs, targets)
 
-    if config.train.loss_includes == 'just_sine':
+    if config.train.loss_includes == 'just_target':
         batches_loss = 0
         for i in range(model_outputs.shape[0]):
             batches_loss += criterion(model_outputs[i, :, all_second_cue_idx[i]:all_sine_last_idx[i]],
                                       targets[i, :, all_second_cue_idx[i]:all_sine_last_idx[i]])
         return batches_loss / model_outputs.shape[0]
 
-    if config.train.loss_includes == 'sine_and_interval':
+    if config.train.loss_includes == 'target_and_interval':
         batches_loss = 0
         for i in range(model_outputs.shape[0]):
             batches_loss += criterion(model_outputs[i, :, all_first_cue_idx[i]:all_sine_last_idx[i]],

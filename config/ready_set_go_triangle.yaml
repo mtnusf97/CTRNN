@@ -1,7 +1,7 @@
 dataset:
   input_transform: false
   loader_name: ReadySetGoData
-  name: ready_set_go_data
+  name: ready_set_go_triangle
   path_to_test_data: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/generated_datasets/ready_set_go_samples_1000_duration40_dt0.01_cue_f10l20_interval_2_8_targeta1_cuea1_targetshapetriangle.pkl
   path_to_train_data: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/generated_datasets/ready_set_go_samples_5000_duration40_dt0.01_cue_f10l20_interval_2_8_targeta1_cuea1_targetshapetriangle.pkl
   target_transform: false
@@ -34,7 +34,7 @@ train:
   criterion: ready_set_go_mse_loss
   display_iter: 1
   is_resume: false
-  loss_includes: just_sine
+  loss_includes: just_target
   lr: 1.0e-04
   lr_decay: 0.1
   lr_decay_epoch:
