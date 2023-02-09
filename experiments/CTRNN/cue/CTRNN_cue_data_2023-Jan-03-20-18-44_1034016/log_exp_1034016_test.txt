@@ -1,5 +1,0 @@
-INFO  | 01/03/2023 09:12:06 PM | File run_exp.py           | Line 28    | Writing log file to experiments/CTRNN/cue/CTRNN_cue_data_2023-Jan-03-20-18-44_1034016/log_exp_1034016_test.txt
-INFO  | 01/03/2023 09:12:06 PM | File run_exp.py           | Line 29    | Exp instance id = 1034016
-INFO  | 01/03/2023 09:12:06 PM | File run_exp.py           | Line 30    | Exp comment = None
-INFO  | 01/03/2023 09:12:06 PM | File run_exp.py           | Line 31    | Config =
-INFO  | 01/03/2023 09:12:10 PM | File ctrnn_runner.py      | Line 203   | test Loss = 0.007516870275139809

@@ -7,7 +7,7 @@ dataset:
   target_transform: false
   train_ratio: 0.8
 device: cuda:0
-exp_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/CTRNN/ready_set_go_rectangle
+exp_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v1/ready_set_go_rectangle
 exp_name: CTRNN_ready_set_go_data_2023-Jan-13-13-09-35_706238
 gpus:
 - 0
@@ -22,12 +22,12 @@ model:
   tau: 0.1
 run_id: '706238'
 runner: ReadySetGoCTRNNRunner
-save_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/CTRNN/ready_set_go/CTRNN_ready_set_go_data_2023-Jan-13-13-09-35_706238
+save_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v1/ready_set_go/CTRNN_ready_set_go_data_2023-Jan-13-13-09-35_706238
 seed: 1234
 test:
   batch_size: 1
   num_workers: 0
-  test_model_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/CTRNN/ready_set_go/CTRNN_ready_set_go_data_2023-Jan-13-13-09-35_706238
+  test_model_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v1/ready_set_go/CTRNN_ready_set_go_data_2023-Jan-13-13-09-35_706238
   test_model_name: model_snapshot_cue_data.pth
 train:
   batch_size: 100
@@ -42,7 +42,7 @@ train:
   max_epoch: 500
   num_workers: 0
   optimizer: Adam
-  resume_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/CTRNN/ready_set_go/CTRNN_ready_set_go_data_2023-Jan-10-23-37-46_3376284
+  resume_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v1/ready_set_go/CTRNN_ready_set_go_data_2023-Jan-10-23-37-46_3376284
   resume_epoch: 100
   resume_model: model_snapshot_ready_set_go_data.pth
   snapshot_epoch: 1

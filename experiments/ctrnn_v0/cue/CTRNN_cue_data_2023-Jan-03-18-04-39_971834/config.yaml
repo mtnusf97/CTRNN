@@ -1,0 +1,51 @@
+dataset:
+  input_transform: false
+  loader_name: CueData
+  name: cue_data
+  path_to_test_data: /home/matin/McMaster/trimba/phd_codes/ctrnn/pytorch/generated_datasets/cue_samples_500_duration_30_dt01_cue_f10_l20_sl5_sa1.pkl
+  path_to_train_data: /home/matin/McMaster/trimba/phd_codes/ctrnn/pytorch/generated_datasets/cue_samples_2000_duration_30_dt01_cue_f10_l20_sl5_sa1.pkl
+  target_transform: false
+  train_ratio: 0.8
+device: cpu
+exp_dir: experiments/ctrnn_v0/cue
+exp_name: CTRNN_cue_data_2023-Jan-03-18-04-39_971834
+gpus: []
+model:
+  delay: 0
+  dt: 0.01
+  has_feedback: true
+  hidden_size: 50
+  input_size: 1
+  name: CTRNN
+  output_size: 1
+  tau: 0.1
+run_id: '971834'
+runner: CueCTRNNRunner
+save_dir: experiments/ctrnn_v0/cue/CTRNN_cue_data_2023-Jan-03-18-04-39_971834
+seed: 1234
+test:
+  all_results_dict: /home/matin/school/Amir_Omidvarnia/all_results.pkl
+  batch_size: 1
+  num_workers: 0
+  test_model_dir: experiments/ctrnn_v0/cue/CTRNN_cue_data_2023-Jan-03-18-04-39_971834
+  test_model_name: model_snapshot_cue_data.pth
+train:
+  batch_size: 100
+  criterion: cue_mse_loss
+  display_iter: 1
+  is_resume: false
+  lr: 1.0e-05
+  lr_decay: 0.1
+  lr_decay_epoch:
+  - 100000000
+  max_epoch: 100
+  num_workers: 0
+  optimizer: Adam
+  post_is_in_loss: true
+  pre_is_in_loss: true
+  resume_dir: null
+  resume_epoch: 5000
+  resume_model: null
+  snapshot_epoch: 1
+  wd: 0
+use_gpu: false
