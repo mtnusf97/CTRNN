@@ -5,7 +5,7 @@
 # sys.path.append(path_utils)
 
 from data_generator import *
-from CTRNN.utils.other_utils import *
+from other_utils import *
 
 
 number_of_data_samples = 99
@@ -22,15 +22,14 @@ dt = 0.01
 if __name__ == "__main__":
     all_data = []
     for i in range(number_of_data_samples):
-        data_x, data_y, first_cue_idx, second_cue_idx, concavity = gaussian_derivative_loss_data(data_duration,
-                                                                                                 first_cue_first_time,
-                                                                                                 first_cue_last_time,
-                                                                                                 min_interval,
-                                                                                                 max_interval,
-                                                                                                 cue_amplitude,
-                                                                                                 variance,
-                                                                                                 scale,
-                                                                                                 dt)
+        data_x, data_y, first_cue_idx, second_cue_idx, concavity = gaussian_derivative_loss_generator(data_duration,
+                                                                                                      first_cue_first_time,
+                                                                                                      first_cue_last_time,
+                                                                                                      min_interval,
+                                                                                                      max_interval,
+                                                                                                      cue_amplitude,
+                                                                                                      variance, scale,
+                                                                                                      dt)
 
         data = {'data_x': data_x,
                 'data_y': data_y,
