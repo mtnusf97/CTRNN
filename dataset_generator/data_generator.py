@@ -277,3 +277,79 @@ def gaussian_derivative_loss_forced_generator(data_duration,
     data_y = scaled_gaussian_derivative_shape(temp_x, concavity_change, variance, scale)
 
     return data_x, data_y, first_cue_idx, second_cue_idx, concavity_change
+
+
+def beats_chain_generator(number_of_beats=10,
+                          number_of_targets=10,
+                          target_starts_from_beat=2,
+                          target_shape='full_sine',
+                          data_duration=50,
+                          first_beat_first_time=10,
+                          first_beat_last_time=30,
+                          min_interval=0.4,
+                          max_interval=1.2,
+                          target_amplitude=1,
+                          beats_amplitude=1,
+                          dt=0.01):
+    """
+    Args:
+        number_of_beats:
+        number_of_targets:
+        target_starts_from_beat:
+        target_shape:
+        data_duration:
+        first_beat_first_time:
+        first_beat_last_time:
+        min_interval:
+        max_interval:
+        target_amplitude:
+        beats_amplitude:
+        dt:
+
+    Returns:
+
+    """
+    assert first_beat_last_time + number_of_beats * max_interval < data_duration
+    assert min_interval < max_interval
+
+    data_size = int(data_duration / dt)
+
+    # create data_x
+    data_x = torch.zeros((1, data_size))
+    first_beat_time = np.random.uniform(low=first_beat_first_time, high=first_beat_last_time)
+    interval_between_beats = np.random.uniform(low=min_interval, high=max_interval)
+    first_beat_idx = int(first_beat_time / dt)
+    for i in range(number_of_beats):
+        data_x[0, int((first_beat_time + i * interval_between_beats) / dt)] = beats_amplitude
+
+    # create data_y
+    data_y = torch.zeros((1, data_size))
+    target_size = int((interval_between_beats * (number_of_targets - 1)) / dt)
+    data_y_start_time = first_beat_time + (target_starts_from_beat - 1) * interval_between_beats
+    data_y_start_idx = int(data_y_start_time / dt)
+    data_y_end_time = data_y_start_time + (number_of_targets - 1) * interval_between_beats
+    data_y_end_idx = int(data_y_end_time / dt)
+    if target_shape == 'half_sine':
+        sine_times = torch.arange(target_size) * ((number_of_targets - 1) * np.pi / target_size)
+        sine_wave = torch.sin(sine_times) * target_amplitude
+        data_y[0, data_y_start_idx:data_y_start_idx + len(sine_times)] = sine_wave
+    elif target_shape == 'full_sine':
+        sine_times = torch.arange(target_size) * (2 * (number_of_targets - 1) * np.pi / target_size)
+        sine_wave = torch.sin(sine_times) * target_amplitude
+        data_y[0, data_y_start_idx:data_y_start_idx + len(sine_times)] = sine_wave
+    elif target_shape == 'double_sine':
+        sine_times = torch.arange(target_size) * (4 * (number_of_targets - 1) * np.pi / target_size)
+        sine_wave = torch.sin(sine_times) * target_amplitude
+        data_y[0, data_y_start_idx:data_y_start_idx + len(sine_times)] = sine_wave
+    elif target_shape == 'triple_sine':
+        sine_times = torch.arange(target_size) * (6 * (number_of_targets - 1) * np.pi / target_size)
+        sine_wave = torch.sin(sine_times) * target_amplitude
+        data_y[0, data_y_start_idx:data_y_start_idx + len(sine_times)] = sine_wave
+    elif target_shape == 'triangle':
+        triangle_times = torch.arange(target_size) * (2 * (number_of_targets - 1) * np.pi / target_size)
+        triangle_wave = 0.5 * (scipy.signal.sawtooth(triangle_times, 0.5) + 1) * target_amplitude
+        data_y[0, data_y_start_idx:data_y_start_idx + len(triangle_times)] = torch.tensor(triangle_wave)
+    else:
+        raise Exception(f"target shape {target_shape} is not defined")
+
+    return data_x, data_y, first_beat_idx, interval_between_beats, data_y_end_idx
