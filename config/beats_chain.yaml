@@ -30,7 +30,7 @@ test:
   test_model_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v1/ready_set_go/CTRNN_ready_set_go_data_2023-Jan-13-13-09-35_706238
   test_model_name: model_snapshot_cue_data.pth
 train:
-  batch_size: 100
+  batch_size: 200
   criterion: beats_chain_mse_loss
   display_iter: 1
   is_resume: false
@@ -39,7 +39,7 @@ train:
   lr_decay: 0.1
   lr_decay_epoch:
   - 100000000
-  max_epoch: 500
+  max_epoch: 160
   num_workers: 0
   optimizer: Adam
   resume_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v1/ready_set_go/CTRNN_ready_set_go_data_2023-Jan-10-23-37-46_3376284
