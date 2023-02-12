@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --time=10:30:00
+#SBATCH --time=24:00:00
 #SBATCH --account=def-cannoj9
 #SBATCH --gpus-per-node=a100:1
 #SBATCH --ntasks-per-gpu=1
@@ -8,6 +8,6 @@
 
 source ../.venv/bin/activate
 echo 'starting point'
-python3 /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/run_exp.py -c /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/config/beats_chain_full_sine.yaml
+python3 /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/run_exp.py -c /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/config/beats_chain.yaml
 echo 'Done'
 sleep 5
