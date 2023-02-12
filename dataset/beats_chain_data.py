@@ -1,10 +1,10 @@
 import torch
 from torch.utils.data import Dataset
 import pickle
-__all__ = ['CueData']
+__all__ = ['BeatsChainData']
 
 
-class CueData(Dataset):
+class BeatsChainData(Dataset):
     def __init__(self, config):
         self.config = config
         if self.config.dataset.phase == 'train':
@@ -27,15 +27,16 @@ class CueData(Dataset):
         data = self.all_data[idx]
         data_x = data['data_x']
         data_y = data['data_y']
-        cue_idx = data['cue_idx']
-        sine_last_idx = data['sine_last_idx']
+        first_beat_idx = data['first_beat_idx']
+        data_y_start_idx = data['data_y_start_idx']
+        data_y_end_idx = data['data_y_end_idx']
 
         if self.input_transform:
             data_x = self.input_transform(data_x)
         if self.target_transform:
             data_y = self.target_transform(data_y)
 
-        return data_x, data_y, cue_idx, sine_last_idx
+        return data_x, data_y, first_beat_idx, data_y_start_idx, data_y_end_idx
 
 
 class CueTransform(object):

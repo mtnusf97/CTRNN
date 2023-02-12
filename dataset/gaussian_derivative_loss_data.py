@@ -1,5 +1,6 @@
 from torch.utils.data import Dataset
 import pickle
+__all__ = ['GaussianDerivativeLossData']
 
 
 class GaussianDerivativeLossData(Dataset):

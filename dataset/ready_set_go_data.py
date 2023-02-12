@@ -1,6 +1,7 @@
 import torch
 from torch.utils.data import Dataset
 import pickle
+__all__ = ['ReadySetGoData']
 
 
 class ReadySetGoData(Dataset):
@@ -54,5 +55,3 @@ class ToTensor(object):
         sample = torch.tensor([sample])
         return sample.float()
 
-# idx2names_path = '/home/matin/school/Amir_Omidvarnia/data_idx2name_test.pkl'
-# data_folder_path = '/home/matin/school/Amir_Omidvarnia/gender_data'
