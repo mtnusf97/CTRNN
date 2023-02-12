@@ -7,7 +7,7 @@ dataset:
   target_transform: false
   train_ratio: 0.8
 device: cuda:0
-exp_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v2/beats_chain_full_sine
+exp_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v2/beats_chain
 exp_name: CTRNN_ready_set_go_data_2023-Jan-13-13-09-35_706238
 gpus:
 - 0
