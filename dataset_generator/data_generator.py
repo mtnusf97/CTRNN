@@ -352,4 +352,4 @@ def beats_chain_generator(number_of_beats=10,
     else:
         raise Exception(f"target shape {target_shape} is not defined")
 
-    return data_x, data_y, first_beat_idx, interval_between_beats, data_y_end_idx
+    return data_x, data_y, first_beat_idx, interval_between_beats, data_y_start_idx, data_y_end_idx

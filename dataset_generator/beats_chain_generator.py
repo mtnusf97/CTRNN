@@ -32,24 +32,26 @@ path_to_save = args['path']
 if __name__ == "__main__":
     all_data = []
     for i in range(number_of_data_samples):
-        data_x, data_y, first_beat_idx, interval_between_beats, data_y_end_idx = beats_chain_generator(
-            number_of_beats=number_of_beats,
-            number_of_targets=number_of_targets,
-            target_starts_from_beat=target_starts_from_beat,
-            target_shape=target_shape,
-            data_duration=data_duration,
-            first_beat_first_time=first_beat_first_time,
-            first_beat_last_time=first_beat_last_time,
-            min_interval=min_interval,
-            max_interval=max_interval,
-            target_amplitude=target_amplitude,
-            beats_amplitude=beats_amplitude,
-            dt=dt)
+        data_x, data_y, first_beat_idx, interval_between_beats, data_y_start_idx, data_y_end_idx = \
+            beats_chain_generator(
+                number_of_beats=number_of_beats,
+                number_of_targets=number_of_targets,
+                target_starts_from_beat=target_starts_from_beat,
+                target_shape=target_shape,
+                data_duration=data_duration,
+                first_beat_first_time=first_beat_first_time,
+                first_beat_last_time=first_beat_last_time,
+                min_interval=min_interval,
+                max_interval=max_interval,
+                target_amplitude=target_amplitude,
+                beats_amplitude=beats_amplitude,
+                dt=dt)
 
         data = {'data_x': data_x,
                 'data_y': data_y,
                 'first_beat_idx': first_beat_idx,
                 'interval_between_beats': interval_between_beats,
+                'data_y_start_idx': data_y_start_idx,
                 'data_y_end_idx': data_y_end_idx,
                 'dt': dt}
 
