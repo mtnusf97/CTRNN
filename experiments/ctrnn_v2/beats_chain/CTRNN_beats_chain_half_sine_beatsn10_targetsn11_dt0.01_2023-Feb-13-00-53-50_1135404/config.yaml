@@ -1,0 +1,51 @@
+dataset:
+  input_transform: false
+  loader_name: BeatsChainData
+  name: beats_chain_half_sine_beatsn10_targetsn11_dt0.01
+  path_to_test_data: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/generated_datasets/beats_chain_generator_1000_duration25_dt0.01_beat_f4l10_interval_0.4_1.2_targeta1_beatsa1_targetshapehalf_sine_beatsn10_targetsn11.pkl
+  path_to_train_data: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/generated_datasets/beats_chain_generator_10000_duration25_dt0.01_beat_f4l10_interval_0.4_1.2_targeta1_beatsa1_targetshapehalf_sine_beatsn10_targetsn11.pkl
+  target_transform: false
+  train_ratio: 0.8
+device: cuda:0
+exp_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v2/beats_chain
+exp_name: CTRNN_beats_chain_half_sine_beatsn10_targetsn11_dt0.01_2023-Feb-13-00-53-50_1135404
+gpus:
+- 0
+model:
+  delay: 0
+  dt: 0.01
+  has_feedback: false
+  hidden_size: 500
+  input_size: 1
+  name: CTRNN
+  output_size: 1
+  tau: 0.1
+run_id: '1135404'
+runner: BeatsChainCTRNNRunner
+save_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v2/beats_chain/CTRNN_beats_chain_half_sine_beatsn10_targetsn11_dt0.01_2023-Feb-13-00-53-50_1135404
+seed: 1234
+test:
+  batch_size: 1
+  num_workers: 0
+  test_model_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v2/beats_chain/CTRNN_beats_chain_half_sine_beatsn10_targetsn11_dt0.01_2023-Feb-13-00-53-50_1135404
+  test_model_name: model_snapshot_cue_data.pth
+train:
+  batch_size: 200
+  criterion: beats_chain_mse_loss
+  display_iter: 1
+  is_resume: false
+  loss_includes: just_target
+  lr: 0.0001
+  lr_decay: 0.1
+  lr_decay_epoch:
+  - 100000000
+  max_epoch: 200
+  num_workers: 0
+  optimizer: Adam
+  resume_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v1/ready_set_go/CTRNN_ready_set_go_data_2023-Jan-10-23-37-46_3376284
+  resume_epoch: 100
+  resume_model: model_snapshot_ready_set_go_data.pth
+  snapshot_epoch: 1
+  train_use_gpu: ture
+  wd: 0
+use_gpu: true

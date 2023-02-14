@@ -1,0 +1,13 @@
+INFO  | 02/13/2023 12:53:51 AM | File run_exp.py           | Line 28    | Writing log file to /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v2/beats_chain/CTRNN_beats_chain_half_sine_beatsn10_targetsn11_dt0.01_2023-Feb-13-00-53-50_1135404/log_exp_1135404_train.txt
+INFO  | 02/13/2023 12:53:51 AM | File run_exp.py           | Line 29    | Exp instance id = 1135404
+INFO  | 02/13/2023 12:53:51 AM | File run_exp.py           | Line 30    | Exp comment = None
+INFO  | 02/13/2023 12:53:51 AM | File run_exp.py           | Line 31    | Config =
+ERROR | 02/13/2023 12:53:51 AM | File run_exp.py           | Line 44    | Traceback (most recent call last):
+  File "/home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/run_exp.py", line 40, in main
+    runner.train()
+  File "/lustre06/project/6078727/mtnusf97/CTRNN/runner/beats_chain_ctrnn_runner.py", line 40, in train
+    train_dataset = eval(self.dataset_conf.loader_name)(self.config)
+  File "/lustre06/project/6078727/mtnusf97/CTRNN/dataset/beats_chain_data.py", line 20, in __init__
+    with open(self.path_to_data, 'rb') as f:
+FileNotFoundError: [Errno 2] No such file or directory: '/home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/generated_datasets/beats_chain_generator_10000_duration25_dt0.01_beat_f4l10_interval_0.4_1.2_targeta1_beatsa1_targetshapehalf_sine_beatsn10_targetsn11.pkl'
+
