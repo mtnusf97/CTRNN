@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from copy import deepcopy
 
 __all__ = ['CTRNN']
 
@@ -56,7 +57,6 @@ class CTRNN(nn.Module):
         return tensor_outputs, activations, hidden_states
 
     def init_activations_outputs(self, batch_size, for_predict=False):
-        # activations = torch.flatten(torch.nn.init.xavier_normal_(torch.zeros((self.hidden_size, 1))))
         activations = torch.zeros((batch_size, self.hidden_size)).to(self.device)
         if for_predict:
             activations = torch.zeros(self.hidden_size)
@@ -67,7 +67,6 @@ class CTRNN(nn.Module):
         outputs = [output.to(self.device) for output in outputs]
         outputs.append(self.wO(hidden_states))
 
-        # return activations.to(self.device), hidden_states.to(self.device), [output.to(self.device) for output in outputs]
         return activations, hidden_states, outputs
 
     def predict(self, x, activations, hidden_states, outputs):
@@ -96,3 +95,32 @@ class CTRNN(nn.Module):
 
         return tensor_outputs, activations, hidden_states
 
+    def detailed_predict(self, x, activations, hidden_states, outputs):
+        """
+        :param x: Tensor of input to the network, shape is [input_size, time_steps]
+        :param activations:
+        :param hidden_states:
+        :param outputs:
+        :return:
+        """
+        all_activations = []
+        all_hidden_states = []
+        time_steps = x.shape[-1]
+        for i in range(time_steps):
+            x_i = x[:, i]
+            if self.has_feedback:
+                delayed_output = outputs[-self.delay_index]
+                da_over_dt = -activations + self.wI(x_i) + self.wR(hidden_states) + self.wF(delayed_output)
+            else:
+                da_over_dt = -activations + self.wI(x_i) + self.wR(hidden_states)
+
+            activations = activations + self.dt_over_tau * da_over_dt
+            hidden_states = torch.tanh(activations)
+            last_output = self.wO(hidden_states)
+            all_activations.append(activations)
+            all_hidden_states.append(hidden_states)
+            outputs.append(last_output)
+
+        tensor_outputs = torch.cat([i for i in outputs[self.delay_index:]], dim=0)
+
+        return tensor_outputs, all_activations, all_hidden_states

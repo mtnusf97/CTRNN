@@ -1,3 +1,5 @@
 generated_datasets/
 .venv/
 .idea/
+**/.ipynb_checkpoints
+dimension_reduction/html_files/

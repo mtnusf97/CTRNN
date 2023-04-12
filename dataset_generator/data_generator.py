@@ -2,6 +2,7 @@ from __future__ import print_function, division
 import numpy as np
 import torch
 import scipy
+import torch.nn as nn
 
 
 # from scipy import signal
@@ -316,7 +317,7 @@ def beats_chain_generator(number_of_beats=10,
     data_size = int(data_duration / dt)
 
     # find interval range
-    interval_periods = np.array([i[1]-i[0] for i in interval_ranges])
+    interval_periods = np.array([i[1] - i[0] for i in interval_ranges])
     interval_periods_p = interval_periods / np.sum(interval_periods)
     choice = np.random.choice(a=len(interval_ranges), p=interval_periods_p)
 
@@ -429,3 +430,67 @@ def beats_chain_forced_generator(number_of_beats=10,
         raise Exception(f"target shape {target_shape} is not defined")
 
     return data_x, data_y, first_beat_idx, data_y_start_idx, data_y_end_idx
+
+
+def mixed_data_x_loss(model,
+                      device='cpu',
+                      target_shape='full_sine',
+                      targets_start_from_beat=2,
+                      data_duration=50,
+                      first_beat_time1=10,
+                      distance_between_chains=8,
+                      interval1=0.4,
+                      interval2=0.4,
+                      number_of_beats1=10,
+                      number_of_beats2=10,
+                      number_of_targets1=10,
+                      number_of_targets2=10,
+                      dt=0.01,
+                      loss_includes='just_target'):
+    data_x1, data_y1, first_beat_idx, _, data_y_end_idx = beats_chain_forced_generator(
+        number_of_beats=number_of_beats1,
+        number_of_targets=number_of_targets1,
+        target_starts_from_beat=targets_start_from_beat,
+        target_shape=target_shape,
+        data_duration=data_duration,
+        first_beat_time=first_beat_time1,
+        interval=interval1,
+        target_amplitude=1,
+        beats_amplitude=1,
+        dt=dt)
+
+    first_beat_time2 = int(data_y_end_idx * dt + interval1 + distance_between_chains)
+    assert first_beat_time2 + (number_of_beats2 + 1) * interval2 < data_duration
+
+    data_x2, data_y2, first_beat_idx, data_y_start_idx, data_y_end_idx = beats_chain_forced_generator(
+        number_of_beats=number_of_beats2,
+        number_of_targets=number_of_targets2,
+        target_starts_from_beat=targets_start_from_beat,
+        target_shape=target_shape,
+        data_duration=data_duration,
+        first_beat_time=first_beat_time2,
+        interval=interval2,
+        target_amplitude=1,
+        beats_amplitude=1,
+        dt=dt)
+
+    data_x = data_x1 + data_x2
+    data_y = data_y1 + data_y2
+
+    activations, hidden_states, outputs = model.init_activations_outputs(batch_size=1)
+    outputs, activations, hidden_states = model.predict(data_x,
+                                                        activations.to(device),
+                                                        hidden_states.to(device),
+                                                        outputs)
+
+    len_data_points = int(data_duration * (1 / dt))
+    outputs = outputs.detach().view(len_data_points)
+    data_x = data_x.view(len_data_points)
+    data_y = data_y.view(len_data_points)
+
+    criterion = nn.MSELoss()
+    if loss_includes == 'just_target':
+        loss = criterion(data_y[data_y_start_idx: data_y_end_idx], outputs[data_y_start_idx: data_y_end_idx])
+        return loss
+    else:
+        raise Exception('undefined')
