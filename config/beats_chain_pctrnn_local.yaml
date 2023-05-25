@@ -1,0 +1,53 @@
+dataset:
+  input_transform: false
+  loader_name: BeatsChainData
+  name: beats_chain_full_sine_beatsn10_targetsn10
+  path_to_test_data: /home/matin/McMaster/trimba/phd_codes/CTRNN/experiments/generated_datasets/beats_chain_generator_50_duration25_dt0.01_beat_f4l10_intervalranges_[[0.4,1.2]]_targeta1_beatsa1_targetshapefull_sine_beatsn10_targetsn10.pkl
+  path_to_train_data: /home/matin/McMaster/trimba/phd_codes/CTRNN/experiments/generated_datasets/beats_chain_generator_50_duration25_dt0.01_beat_f4l10_intervalranges_[[0.4,1.2]]_targeta1_beatsa1_targetshapefull_sine_beatsn10_targetsn10.pkl
+  target_transform: false
+  train_ratio: 0.8
+device: cpu
+exp_dir: /home/matin/McMaster/trimba/phd_codes/CTRNN/experiments/pctrnn/beats_chain
+exp_name: PCTRNN_beats_chain_full_sine_beatsn10_targetsn10_2023-Apr-17-13-01-22_531255
+gpus:
+- 0
+model:
+  ctrnn_size: 500
+  delay: 0
+  dt: 0.01
+  has_feedback: false
+  input_perceptron_size: 20
+  input_size: 1
+  name: PCTRNN
+  output_perceptron_size: 20
+  output_size: 1
+  tau: 0.1
+run_id: '531255'
+runner: BeatsChainCTRNNRunner
+save_dir: /home/matin/McMaster/trimba/phd_codes/CTRNN/experiments/pctrnn/beats_chain/PCTRNN_beats_chain_full_sine_beatsn10_targetsn10_2023-Apr-17-13-01-22_531255
+seed: 1234
+test:
+  batch_size: 1
+  num_workers: 0
+  test_model_dir: /home/matin/McMaster/trimba/phd_codes/CTRNN/experiments/pctrnn/beats_chain/PCTRNN_beats_chain_full_sine_beatsn10_targetsn10_2023-Apr-17-13-01-22_531255
+  test_model_name: model_snapshot_cue_data.pth
+train:
+  batch_size: 10
+  criterion: beats_chain_mse_loss
+  display_iter: 1
+  is_resume: false
+  loss_includes: just_target
+  lr: 0.0001
+  lr_decay: 0.1
+  lr_decay_epoch:
+  - 100000000
+  max_epoch: 200
+  num_workers: 0
+  optimizer: Adam
+  resume_dir: /home/mtnusf97/projects/def-cannoj9/mtnusf97/CTRNN/experiments/ctrnn_v1/ready_set_go/CTRNN_ready_set_go_data_2023-Jan-10-23-37-46_3376284
+  resume_epoch: 100
+  resume_model: model_snapshot_ready_set_go_data.pth
+  snapshot_epoch: 1
+  train_use_gpu: false
+  wd: 0
+use_gpu: false
